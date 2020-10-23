@@ -13,11 +13,11 @@ Second_Stage:
     mov 	si, second_stage_msg	; Output our greeting message
     call 	Console_WriteLine_16
 	
-	;mov		bx, 0FFFFh
-	;call	Console_Write_Int
+	mov		bx, 0FFFFh
+	call	Console_Write_Int
 
-	;mov		bx, 0FFFFh
-	;call	Console_Write_Hex
+	mov		bx, 0FFFFh
+	call	Console_Write_Hex
 
 	; Put your test code here
 

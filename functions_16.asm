@@ -44,8 +44,10 @@ Console_Write_Hex:
 	push	ax
 	push	dx
 
+	mov		ax, bx
 	mov		cx, 16
-	mov		ah, 0Eh
+	xor		si, si
+	jmp		Build_Stack
 
 ; Outputs value in bx register as an int value
 Console_Write_Int:
@@ -54,33 +56,39 @@ Console_Write_Int:
 	push	ax
 	push	dx
 
+	mov		ax, bx
 	mov		cx, 10
-	mov		ah, 0Eh
 	xor		si, si
+	jmp		Build_Stack
 
 Build_Stack:
 	xor		dx, dx
 	div		cx
-	push	ax
+	push	dx
 	inc		si
-	test	dx, dx
+	test	ax, ax
 	jnz		Build_Stack
 
 Write_Stack:
-	pop		ax
+	pop		dx
+	mov		ax,	dx
 	cmp		ax, 9
-	jg		.Out_Hex
-	jmp		.Out_Int
+	jg		Out_Hex
+	jmp		Out_Int
 
-.Out_Hex:
+Out_Hex:
 	add		ax, '7'
+	mov		ah, 0Eh
 	int		10h
+	jmp		Write_Finished
 
-.Out_Int:
+Out_Int:
 	add		ax, '0'
+	mov		ah, 0Eh
 	int		10h
+	jmp		Write_Finished
 
-.Write_Finished:
+Write_Finished:
 	dec		si
 	test	si, si
 	jnz		Write_Stack
