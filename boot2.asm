@@ -14,10 +14,11 @@ Second_Stage:
     mov 	si, second_stage_msg	; Output our greeting message
     call 	Console_WriteLine_16
 
-	mov		ah, 0
-	mov		bh, 20
-	mov		al, 0
-	mov		ah, 20
+	push	4
+	push	0
+	push	0
+	push	100
+	push	100
 	call	Draw_Line
 
 	; This never-ending loop ends the code.  It replaces the hlt instruction

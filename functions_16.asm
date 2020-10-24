@@ -99,3 +99,41 @@ Write_Finished:
 	pop	si
 	pop	cx
 	ret
+
+; Example
+; push	2
+; push	4
+; call	Math_Mul
+; value stored in ax
+Math_Mul:
+	push	bp
+	mov		bp, sp
+	push	dx
+	push	cx
+
+	xor		dx, dx
+	mov		ax, [bp + 4]
+	mov		cx, [bp + 6]
+	mul		cx
+
+	pop		dx
+	pop		cx
+	mov		sp, bp
+	pop		bp
+	ret
+
+; push value onto stack, if negative will be flipped and returned in ax
+Math_Abs:
+	push	bp
+	mov		bp, sp
+
+	mov		ax, [bp + 4]
+	cmp		ax, -1
+	jg		.End
+.Neg:
+	neg		ax
+
+.End:
+	mov		sp, bp
+	pop		bp
+	ret

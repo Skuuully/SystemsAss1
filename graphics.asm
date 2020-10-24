@@ -9,72 +9,125 @@ Set_Video_Mode:
     pop     ax
     ret
 
-; @param al, x0 - The first coordinate x
-; @param ah, y0 - The first coordinate y
-; @param bl, x1 - The second coordinate x
-; @param bh, y1 - The second coordinate y
+; colour = [bp + 2]
+; 1st coordinate x [bp + 4]
+; 1st coordinate y [bp + 6]
+; 2nd coordinate x [bp + 8]
+; 2nd coordinate y [bp + 10]
+; dx = bp - 2
+; dy = bp - 4
+; sx = bp - 6
+; sy = bp - 8
+; err = bp - 10
+; e2 = bp - 12 
 Draw_Line:
+    push    bp
+    mov     bp, sp
+    sub     sp, 12
+
     push    ax
     push    bx
 
-    mov     cx, 1
-    mov     dx, 1
+    mov     ax, 1
+    mov     bx, 1
+    mov     [bp - 6], ax
+    mov     [bp - 8], bx
 
-    cmp     al, bl
+.CheckX:
+    mov     ax, [bp + 4]
+    mov     bx, [bp + 8]
+
+    cmp     ax, bx
     jl      .XLess
+    jmp     .CheckY
+
+.CheckY:
+    mov     ax, [bp + 6]
+    mov     bx, [bp + 10]
     
-    cmp     ah, bh
+    cmp     ax, bx
     jl      .YLess
+    jmp     .Continue_Setup
 
 .XLess:
-    mov     cx, -1
-    jmp     .Continue_Setup
+    mov     ax, -1
+    mov     [bp - 6], ax
+    jmp     .CheckY
 
 .YLess:
-    mov     dx, -1
+    mov     ax, -1
+    mov     [bp - 8], ax
     jmp     .Continue_Setup
 
-;dx := abs(x1-x0)
-;dy := abs(y1-y0)
-;err := dx-dy
 .Continue_Setup:
-    sub     bl, al
-    sub     bh, ah
-    sub     bl, bh
-    mov     si, bx
-    pop     bx
-    pop     ax
-
+.SetupDx:
+    mov     ax, [bp + 4]
+    mov     bx, [bp + 8]
+    sub     bx, ax
+    push    bx
+    call    Math_Abs
+    mov     [bp - 2], ax
+.SetupDy:
+    mov     ax, [bp + 6]
+    mov     bx, [bp + 10]
+    sub     bx, ax
+    push    bx
+    call    Math_Abs
+    mov     [bp - 4], ax
+.SetupErr:
+    mov     bx, [bp - 2]
+    sub     bx, ax
+    mov     [bp - 10], bx
 .Loop:
-    push    cx
-    push    dx
-    mov     cx, ax
-    mov     dx, bx
+    mov     cx, [bp + 4]
+    mov     dx, [bp + 6]
+    mov     ax, [bp + 2]
     call    Plot_Pixel
-    pop     cx
-    pop     dx
-    cmp     al, bl
+    mov     ax, [bp + 8]
+    mov     bx, [bp + 10]
+    cmp     cx, ax
     je      .LoopCheckTwo
 
-;e2 := 2*err
-;if e2 > -dy
-;   err := err -dy 
-;   x0 := x0 + sx
-;if e2 < dx
-;   err := err + dx
-;   y0 := y0 + sy
 .LoopStageTwo:
-    mov     cx, si
-    mul     cx, 2
-    mul     bx, -1
-    cmp     cx, bx 
-    jmp     .Loop
+.SetupE2:
+    mov     ax, [bp - 10]
+    shl     ax, 1
+    mov     [bp - 12], ax
+    mov     bx, [bp - 4]
+.CheckE2GreaterNegDy:
+    neg     bx
+    cmp     ax, bx
+    jg      .SetupX0
+.SetupX0:
+    mov     cx, [bp - 10]
+    add     cx, bx
+    mov     ax, [bp + 4]
+    mov     bx, [bp - 6]
+    add     ax, bx
+    mov     [bp + 4], bx
+.CheckE2LessDx:
+    mov     ax, [bp - 12]
+    mov     bx, [bp - 2]
+    cmp     ax, bx
+    jl      .SetupY0
+    jmp     .LoopStageTwo
+
+.SetupY0:
+    mov     cx, [bp - 10]
+    add     cx, bx
+    mov     dx, [bp + 6]
+    mov     ax, [bp - 8]
+    add     dx, ax
+    mov     [bp + 6], dx
+    jmp     .LoopStageTwo
 
 .LoopCheckTwo:
-    cmp     ah, bh
+    cmp     dx, bx
     jne     .LoopStageTwo
 
 .Cleanup:
+    mov     sp, bp
+    pop     bp
     ret
 
 
@@ -84,7 +137,7 @@ Plot_Pixel:
 
     call    Set_Video_Mode
     mov     ah, 0Ch
-    mov     al, 01h ; pixel col
+    ;mov     al, 01h ; pixel col
     xor     bh, bh ; video page number
     int     10h
 
