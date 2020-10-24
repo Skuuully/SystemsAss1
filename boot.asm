@@ -1,3 +1,6 @@
+%ifndef	BOOT_ASM
+%define	BOOT_ASM
+
 ; Real-Mode Part of the Boot Loader
 ;
 ; When the PC starts, the processor is essentially emulating an 8086 processor, i.e. 
@@ -66,4 +69,5 @@ cannot_continue:  	db	'Cannot continue boot process', 0
 	
 ; The segment must end with AA55h to indicate that it is a boot sector
 	dw 0AA55h
-	
+
+%endif

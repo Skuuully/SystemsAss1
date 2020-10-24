@@ -1,3 +1,6 @@
+%ifndef FUNCTIONS_16_ASM
+%define FUNCTIONS_16_ASM
+
 ; Various sub-routines that will be useful to the boot loader code	
 
 ; Output Carriage-Return/Line-Feed (CRLF) sequence to screen using BIOS
@@ -120,7 +123,7 @@ Math_Mul:
 	pop		cx
 	mov		sp, bp
 	pop		bp
-	ret
+	ret		4
 
 ; push value onto stack, if negative will be flipped and returned in ax
 Math_Abs:
@@ -128,7 +131,7 @@ Math_Abs:
 	mov		bp, sp
 
 	mov		ax, [bp + 4]
-	cmp		ax, -1
+	cmp		ax, 0
 	jg		.End
 .Neg:
 	neg		ax
@@ -136,4 +139,32 @@ Math_Abs:
 .End:
 	mov		sp, bp
 	pop		bp
+	ret		2
+
+Math_Test:
+	mov		ax, 20
+	mov		bx, 15
+	sub		ax, bx
+	sub		ax, bx
+	sub		ax, bx
+
+	cmp		ax, bx
+	jg		.AxGreater
+	jmp		.BxGreater
+
+.AxGreater:
+	mov		si, axgreater
+	jmp		.End
+
+.BxGreater:
+	mov		si, bxgreater
+
+.End
+	call	Console_WriteLine_16
 	ret
+
+axgreater	db 'ax is greater than bx', 0
+bxgreater	db 'bx is greater than ax', 0
+
+
+%endif
