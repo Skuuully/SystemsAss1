@@ -53,7 +53,7 @@ Second_Stage:
 	call	Draw_Line
 	push	50 ; y1
 	push	0 ; x1
-	push	300 ; y0
+	push	200 ; y0
 	push	0 ; x0
 	push	10 ; col
 	call	Draw_Line

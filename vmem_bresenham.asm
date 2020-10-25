@@ -7,6 +7,8 @@ x1message   db 'x1: ', 0
 y0message   db 'y0: ', 0
 y1message   db 'y1: ', 0
 loopingmessage  db 'looping now', 0
+bad_param_message  db 'bad parameter given, x value range 0 - 320, y value range 0 - 200', 0
+;bad_param_message   db, 'bad parameter given, x value must be in range ', 0
 
 ; Passed params
 %assign     y1  12
@@ -33,32 +35,36 @@ Draw_Line:
     push    bp
     mov     bp, sp
     sub     sp, 12
-; .DebugParams:
-;     mov     si, colourmessage
-;     call    Console_Write_16
-;     mov     bx, [bp + colour]
-;     call    Console_Write_Int
+.CheckParams:
+    mov     bx, [bp + x0]
+    cmp     bx, 0
+    jl      .BadParams
+    cmp     bx, 320
+    jg      .BadParams
 
-;     mov     si, x0message
-;     call    Console_Write_16
-;     mov     bx, [bp + x0]
-;     call    Console_Write_Int
+    mov     bx, [bp + x1]
+    cmp     bx, 0
+    jl      .BadParams
+    cmp     bx, 320
+    jg      .BadParams
 
-;     mov     si, y0message
-;     call    Console_Write_16
-;     mov     bx, [bp + y0]
-;     call    Console_Write_Int
+    mov     bx, [bp + y0]
+    cmp     bx, 0
+    jl      .BadParams
+    cmp     bx, 200
+    jg      .BadParams
+    
+    mov     bx, [bp + y1]
+    cmp     bx, 0
+    jl      .BadParams
+    cmp     bx, 200
+    jg      .BadParams
 
-;     mov     si, x1message
-;     call    Console_Write_16
-;     mov     bx, [bp + x1]
-;     call    Console_Write_Int
-
-;     mov     si, y1message
-;     call    Console_Write_16
-;     mov     bx, [bp + y1]
-;     call    Console_Write_Int
-;     jmp     .Cleanup
+    jmp     .SetupDeltaX
+.BadParams:
+    mov     si, bad_param_message
+    call    Console_WriteLine_16
+    jmp     .Cleanup
 .SetupDeltaX:
     mov     ax, [bp + x0]
     mov     bx, [bp + x1]
