@@ -8,8 +8,10 @@ BITS 16
 ORG 9000h
 	jmp 	Second_Stage
 
+;%include "bios_bresenham.asm"
 %include "functions_16.asm"
 %include "graphics.asm"
+%include "vmem_bresenham.asm"
 
 ;	Start of the second stage of the boot loader
 	

@@ -141,30 +141,30 @@ Math_Abs:
 	pop		bp
 	ret		2
 
-Math_Test:
-	mov		ax, 20
-	mov		bx, 15
-	sub		ax, bx
-	sub		ax, bx
-	sub		ax, bx
+; Math_Test:
+; 	mov		ax, 20
+; 	mov		bx, 15
+; 	sub		ax, bx
+; 	sub		ax, bx
+; 	sub		ax, bx
 
-	cmp		ax, bx
-	jg		.AxGreater
-	jmp		.BxGreater
+; 	cmp		ax, bx
+; 	jg		.AxGreater
+; 	jmp		.BxGreater
 
-.AxGreater:
-	mov		si, axgreater
-	jmp		.End
+; .AxGreater:
+; 	mov		si, axgreater
+; 	jmp		.End
 
-.BxGreater:
-	mov		si, bxgreater
+; .BxGreater:
+; 	mov		si, bxgreater
 
-.End
-	call	Console_WriteLine_16
-	ret
+; .End
+; 	call	Console_WriteLine_16
+; 	ret
 
-axgreater	db 'ax is greater than bx', 0
-bxgreater	db 'bx is greater than ax', 0
+; axgreater	db 'ax is greater than bx', 0
+; bxgreater	db 'bx is greater than ax', 0
 
 
 %endif
