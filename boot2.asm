@@ -12,6 +12,7 @@ ORG 9000h
 %include "functions_16.asm"
 %include "graphics.asm"
 %include "vmem_bresenham.asm"
+%include "vmem_rect.asm"
 
 ;	Start of the second stage of the boot loader
 	
@@ -57,6 +58,12 @@ Second_Stage:
 	push	0 ; x0
 	push	10 ; col
 	call	Draw_Line
+	push 	125 ; height
+	push 	100 ; width
+	push 	25 ; y0
+	push 	25 ; x0
+	push 	2 ; colour
+	call	Draw_Rect
 	; mov		si, line_drawn_msg
 	; call	Console_WriteLine_16
 

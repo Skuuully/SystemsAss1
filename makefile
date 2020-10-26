@@ -12,7 +12,7 @@ QEMUOPTS = -drive file=bootloader.img,index=0,media=disk,format=raw -smp 1 -m 51
 	
 boot.bin: boot.asm functions_16.asm
 
-boot2.bin: boot2.asm functions_16.asm graphics.asm bios_bresenham.asm vmem_bresenham.asm
+boot2.bin: boot2.asm functions_16.asm graphics.asm vmem_bresenham.asm vmem_rect.asm
 
 bootloader.img: boot.bin boot2.bin
 	dd if=/dev/zero of=bootloader.img count=10000
