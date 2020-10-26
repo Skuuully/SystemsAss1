@@ -21,48 +21,54 @@ Second_Stage:
     call 	Console_WriteLine_16
 
 	call	Set_Video_Mode
-	push	0; y1
-	push	300 ; x1
-	push	0 ; y0
-	push	20 ; x0
-	push	15 ; col
-	call	Draw_Line
-	push	0 ; y1
-	push	20 ; x1
-	push	200 ; y0
-	push	20 ; x0
-	push	14 ; col
-	call	Draw_Line
-	push	5 ; y1
-	push	5 ; x1
-	push	0 ; y0
-	push	5 ; x0
-	push	13 ; col
-	call	Draw_Line
-	push	0 ; y1
-	push	0 ; x1
-	push	50 ; y0
-	push	50 ; x0
-	push	12 ; col
-	call	Draw_Line
-	push	0 ; y1
-	push	0 ; x1
-	push	10 ; y0
-	push	1 ; x0
-	push	11 ; col
-	call	Draw_Line
-	push	50 ; y1
-	push	0 ; x1
-	push	200 ; y0
-	push	0 ; x0
-	push	10 ; col
-	call	Draw_Line
-	push 	2 ; height
-	push 	2 ; width
+	; push	0; y1
+	; push	300 ; x1
+	; push	0 ; y0
+	; push	20 ; x0
+	; push	15 ; col
+	; call	Draw_Line
+	; push	0 ; y1
+	; push	20 ; x1
+	; push	200 ; y0
+	; push	20 ; x0
+	; push	14 ; col
+	; call	Draw_Line
+	; push	5 ; y1
+	; push	5 ; x1
+	; push	0 ; y0
+	; push	5 ; x0
+	; push	13 ; col
+	; call	Draw_Line
+	; push	0 ; y1
+	; push	0 ; x1
+	; push	50 ; y0
+	; push	50 ; x0
+	; push	12 ; col
+	; call	Draw_Line
+	; push	0 ; y1
+	; push	0 ; x1
+	; push	10 ; y0
+	; push	1 ; x0
+	; push	11 ; col
+	; call	Draw_Line
+	; push	50 ; y1
+	; push	0 ; x1
+	; push	200 ; y0
+	; push	0 ; x0
+	; push	10 ; col
+	; call	Draw_Line
+	push 	10 ; height
+	push 	50 ; width
 	push 	5 ; y0
 	push 	5 ; x0
 	push 	2 ; colour
 	call	Draw_Rect_One_Loop
+	push 	10 ; height
+	push 	50 ; width
+	push 	5 ; y0
+	push 	55 ; x0
+	push 	1 ; colour
+	call	Draw_Rect
 	; mov		si, line_drawn_msg
 	; call	Console_WriteLine_16
 

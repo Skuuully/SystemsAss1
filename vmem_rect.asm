@@ -107,7 +107,7 @@ Draw_Rect_One_Loop:
     add     ax, bx
     mov     [bp - start_pixel], ax
 .SetupOffset:
-    mov     ax, 320
+    mov     ax, 321
     mov     bx, [bp + width]
     sub     ax, bx
     mov     [bp - offset], ax
@@ -138,14 +138,14 @@ Draw_Rect_One_Loop:
     push    dx
     call    Math_Modulo
     cmp     ax, 0
-    jg      .IncreaseCxOffset
+    je      .IncreaseCxOffset
     jmp     .IncrementCx
 .IncreaseCxOffset:
     mov     dx, [bp - offset]
-    add     cx, dx
+    mov     cx, dx
     jmp     .UpdateBx
 .IncrementCx:
-    inc     cx
+    mov     cx, 1
 .UpdateBx:
     add     bx, cx
     jmp     .Plot
