@@ -141,6 +141,32 @@ Math_Abs:
 	pop		bp
 	ret		2
 
+; Value returned in ax
+; Example 5 % 4:
+; push 5
+; push 4
+; call Math_Modulo
+Math_Modulo:
+	push	bp
+	mov		bp, sp
+	push	dx
+	push	cx
+
+.Body:
+	xor		dx, dx
+	mov		ax, [bp + 6]
+	mov		cx, [bp + 4]
+	div		cx
+	mov		ax, dx
+
+
+.Cleanup:
+	pop		cx
+	pop		dx
+	mov		sp, bp
+	pop		bp
+	ret		4
+
 ; Math_Test:
 ; 	mov		ax, 20
 ; 	mov		bx, 15

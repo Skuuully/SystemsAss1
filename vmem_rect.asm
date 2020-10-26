@@ -75,4 +75,83 @@ Draw_Rect:
     pop     bp
     ret     10
 
+%assign colour 4
+%assign x0 6
+%assign y0 8
+%assign width 10
+%assign height 12
+
+%assign total_pixels 2
+%assign offset 4 
+%assign start_pixel 6
+%assign x_end 8
+%assign pixels_plotted 10
+
+Draw_Rect_One_Loop:
+    push    bp
+    mov     bp, sp
+    sub     sp, 10
+.SetupTotalPixels:
+    mov     ax, [bp + width]
+    mov     bx, [bp + height]
+    push    ax
+    push    bx
+    call    Math_Mul
+    mov     [bp - total_pixels], ax
+.SetupStart:
+    mov     ax, [bp + y0]
+    push    ax
+    push    320
+    call    Math_Mul
+    mov     bx, [bp + x0]
+    add     ax, bx
+    mov     [bp - start_pixel], ax
+.SetupOffset:
+    mov     ax, 320
+    mov     bx, [bp + width]
+    sub     ax, bx
+    mov     [bp - offset], ax
+.SetupXEnd:
+    mov     ax, [bp + x0]
+    mov     bx, [bp + width]
+    add     ax, bx
+    mov     [bp - x_end], ax
+.SetupEs:
+    push    0A000h
+    pop     es
+.Start:
+    mov     bx, [bp - start_pixel]
+    xor     cx, cx
+    mov     [bp - pixels_plotted], cx
+.Plot:
+    mov     ax, [bp + colour]
+    mov     [es:bx], al
+    mov     dx, [bp - pixels_plotted]
+    inc     dx
+    mov     [bp - pixels_plotted], dx
+    mov     ax, [bp - total_pixels]
+    cmp     dx, ax
+    je      .Cleanup
+.PutIncreaseToCx:
+    push    dx
+    mov     dx, [bp + width]
+    push    dx
+    call    Math_Modulo
+    cmp     ax, 0
+    jg      .IncreaseCxOffset
+    jmp     .IncrementCx
+.IncreaseCxOffset:
+    mov     dx, [bp - offset]
+    add     cx, dx
+    jmp     .UpdateBx
+.IncrementCx:
+    inc     cx
+.UpdateBx:
+    add     bx, cx
+    jmp     .Plot
+.Cleanup:
+    mov     sp, bp
+    pop     bp
+    ret     10
+
 %endif

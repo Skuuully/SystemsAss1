@@ -20,7 +20,6 @@ Second_Stage:
     mov 	si, second_stage_msg	; Output our greeting message
     call 	Console_WriteLine_16
 
-	; call	Math_Test
 	call	Set_Video_Mode
 	push	0; y1
 	push	300 ; x1
@@ -58,12 +57,12 @@ Second_Stage:
 	push	0 ; x0
 	push	10 ; col
 	call	Draw_Line
-	push 	125 ; height
-	push 	100 ; width
-	push 	25 ; y0
-	push 	25 ; x0
+	push 	2 ; height
+	push 	2 ; width
+	push 	5 ; y0
+	push 	5 ; x0
 	push 	2 ; colour
-	call	Draw_Rect
+	call	Draw_Rect_One_Loop
 	; mov		si, line_drawn_msg
 	; call	Console_WriteLine_16
 
