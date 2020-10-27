@@ -5,6 +5,30 @@
 
 ; Output Carriage-Return/Line-Feed (CRLF) sequence to screen using BIOS
 
+; Pushes general purpose registers
+%macro pushgen 0
+	push 	ax
+	push 	bx
+	push 	cx
+	push 	dx
+%endmacro
+
+; Pops off general purpose registers
+%macro popgen 0
+	pop		dx
+	pop		cx
+	pop		bx
+	pop		ax
+%endmacro
+
+; Writes to the console a passed in message
+%macro console_writeline_16 1
+	push 	si
+	mov		si, %1
+	call	Console_WriteLine_16
+	pop 	si
+%endmacro
+
 Console_Write_CRLF:
 	mov 	ah, 0Eh						; Output CR
     mov 	al, 0Dh
@@ -102,70 +126,6 @@ Write_Finished:
 	pop	si
 	pop	cx
 	ret
-
-; Example
-; push	2
-; push	4
-; call	Math_Mul
-; value stored in ax
-Math_Mul:
-	push	bp
-	mov		bp, sp
-	push	dx
-	push	cx
-
-	xor		dx, dx
-	mov		ax, [bp + 4]
-	mov		cx, [bp + 6]
-	mul		cx
-
-	pop		dx
-	pop		cx
-	mov		sp, bp
-	pop		bp
-	ret		4
-
-; push value onto stack, if negative will be flipped and returned in ax
-Math_Abs:
-	push	bp
-	mov		bp, sp
-
-	mov		ax, [bp + 4]
-	cmp		ax, 0
-	jg		.End
-.Neg:
-	neg		ax
-
-.End:
-	mov		sp, bp
-	pop		bp
-	ret		2
-
-; Value returned in ax
-; Example 5 % 4:
-; push 5
-; push 4
-; call Math_Modulo
-Math_Modulo:
-	push	bp
-	mov		bp, sp
-	push	dx
-	push	cx
-
-.Body:
-	xor		dx, dx
-	mov		ax, [bp + 6]
-	mov		cx, [bp + 4]
-	div		cx
-	mov		ax, dx
-
-
-.Cleanup:
-	pop		cx
-	pop		dx
-	mov		sp, bp
-	pop		bp
-	ret		4
 
 ; Math_Test:
 ; 	mov		ax, 20

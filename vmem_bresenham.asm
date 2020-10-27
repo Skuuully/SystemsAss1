@@ -1,6 +1,8 @@
 %ifndef VMEM_BRESENHAM_ASM
 %define VMEM_BRESENHAM_ASM
 
+%include "math.asm"
+
 colourmessage   db 'colour: ', 0
 x0message   db 'x0: ', 0
 x1message   db 'x1: ', 0
@@ -35,6 +37,7 @@ Draw_Line:
     push    bp
     mov     bp, sp
     sub     sp, 12
+    pushgen
 .CheckParams:
     mov     bx, [bp + x0]
     cmp     bx, 0
@@ -118,7 +121,7 @@ Draw_Line:
     mov     bx, ax
     mov     ax, [bp + x0]
     add     bx, ax
-.DrawPixel
+.DrawPixel:
     mov     ax, [bp + colour]
     mov     [es:bx], al
 .LoopCheck:
@@ -170,6 +173,7 @@ Draw_Line:
     jmp     .Loop
 
 .Cleanup:
+    popgen
     mov     sp, bp
     pop     bp
     ret     10

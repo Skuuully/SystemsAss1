@@ -1,6 +1,17 @@
 %ifndef VMEM_SQUARE_ASM
 %define VMEM_SQUARE_ASM
 
+%include "math.asm"
+
+%macro draw_rect 5
+    push    %5
+    push    %4
+    push    %3
+    push    %2
+    push    %1
+    call    Draw_Rect_One_Loop
+%endmacro
+
 %assign colour 4
 %assign x0 6
 %assign y0 8
@@ -23,6 +34,7 @@ Draw_Rect:
     push    bp
     mov     bp, sp
     sub     sp, 8
+    pushgen
 .InitStarts:
     mov     ax, [bp + x0]
     mov     [bp - curr_x], ax
@@ -46,9 +58,7 @@ Draw_Rect:
     mov     [bp - curr_x], dx
 .CalcPixelPos:
     mov     ax, [bp - curr_y]
-    push    ax
-    push    320
-    call    Math_Mul
+    math_mul    ax, 320
     mov     bx, [bp - curr_x]
     add     ax, bx
     mov     bx, ax ; Pixel pos
@@ -71,6 +81,7 @@ Draw_Rect:
     cmp     ax, bx
     jne     .LoopHeight
 .Cleanup:
+    popgen
     mov     sp, bp
     pop     bp
     ret     10
@@ -87,10 +98,17 @@ Draw_Rect:
 %assign x_end 8
 %assign pixels_plotted 10
 
+; push 	10 ; height
+; push 	50 ; width
+; push 	5 ; y0
+; push 	5 ; x0
+; push 	2 ; colour
+; call	Draw_Rect_One_Loop
 Draw_Rect_One_Loop:
     push    bp
     mov     bp, sp
     sub     sp, 10
+    pushgen
 .SetupTotalPixels:
     mov     ax, [bp + width]
     mov     bx, [bp + height]
@@ -100,9 +118,7 @@ Draw_Rect_One_Loop:
     mov     [bp - total_pixels], ax
 .SetupStart:
     mov     ax, [bp + y0]
-    push    ax
-    push    320
-    call    Math_Mul
+    math_mul    ax, 320
     mov     bx, [bp + x0]
     add     ax, bx
     mov     [bp - start_pixel], ax
@@ -150,6 +166,7 @@ Draw_Rect_One_Loop:
     add     bx, cx
     jmp     .Plot
 .Cleanup:
+    popgen
     mov     sp, bp
     pop     bp
     ret     10

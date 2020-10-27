@@ -1,6 +1,8 @@
 %ifndef BIOS_BRESENHAM_ASM
 %define BIOS_BRESENHAM_ASM
 
+%include "math.asm"
+
 colourmessage   db 'colour: ', 0
 x0message   db 'x0: ', 0
 x1message   db 'x1: ', 0
@@ -33,6 +35,8 @@ Draw_Line:
     push    bp
     mov     bp, sp
     sub     sp, 12
+
+    pushgen
 ; .DebugParams:
 ;     mov     si, colourmessage
 ;     call    Console_Write_16
@@ -157,6 +161,7 @@ Draw_Line:
     jmp     .Loop
 
 .Cleanup:
+    popgen
     mov     sp, bp
     pop     bp
     ret     10

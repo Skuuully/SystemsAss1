@@ -12,6 +12,7 @@ ORG 9000h
 %include "functions_16.asm"
 %include "graphics.asm"
 %include "vmem_bresenham.asm"
+%include "vmem_circle.asm"
 %include "vmem_rect.asm"
 
 ;	Start of the second stage of the boot loader
@@ -21,54 +22,55 @@ Second_Stage:
     call 	Console_WriteLine_16
 
 	call	Set_Video_Mode
-	; push	0; y1
-	; push	300 ; x1
-	; push	0 ; y0
-	; push	20 ; x0
-	; push	15 ; col
-	; call	Draw_Line
-	; push	0 ; y1
-	; push	20 ; x1
-	; push	200 ; y0
-	; push	20 ; x0
-	; push	14 ; col
-	; call	Draw_Line
-	; push	5 ; y1
-	; push	5 ; x1
-	; push	0 ; y0
-	; push	5 ; x0
-	; push	13 ; col
-	; call	Draw_Line
-	; push	0 ; y1
-	; push	0 ; x1
-	; push	50 ; y0
-	; push	50 ; x0
-	; push	12 ; col
-	; call	Draw_Line
-	; push	0 ; y1
-	; push	0 ; x1
-	; push	10 ; y0
-	; push	1 ; x0
-	; push	11 ; col
-	; call	Draw_Line
-	; push	50 ; y1
-	; push	0 ; x1
-	; push	200 ; y0
-	; push	0 ; x0
-	; push	10 ; col
-	; call	Draw_Line
-	push 	10 ; height
-	push 	50 ; width
-	push 	5 ; y0
-	push 	5 ; x0
-	push 	2 ; colour
-	call	Draw_Rect_One_Loop
-	push 	10 ; height
-	push 	50 ; width
-	push 	5 ; y0
-	push 	55 ; x0
-	push 	1 ; colour
-	call	Draw_Rect
+	push	0; y1
+	push	300 ; x1
+	push	0 ; y0
+	push	20 ; x0
+	push	15 ; col
+	call	Draw_Line
+	push	0 ; y1
+	push	20 ; x1
+	push	200 ; y0
+	push	20 ; x0
+	push	14 ; col
+	call	Draw_Line
+	push	5 ; y1
+	push	5 ; x1
+	push	0 ; y0
+	push	5 ; x0
+	push	13 ; col
+	call	Draw_Line
+	push	0 ; y1
+	push	0 ; x1
+	push	50 ; y0
+	push	50 ; x0
+	push	12 ; col
+	call	Draw_Line
+	push	0 ; y1
+	push	0 ; x1
+	push	10 ; y0
+	push	1 ; x0
+	push	11 ; col
+	call	Draw_Line
+	push	50 ; y1
+	push	0 ; x1
+	push	200 ; y0
+	push	0 ; x0
+	push	10 ; col
+	call	Draw_Line
+	draw_rect 3, 5, 5, 50, 10
+	draw_rect 1, 55, 5, 50, 10
+	draw_circle 15, 40, 100, 100 ; colour, radius, xcenter, ycenter
+	draw_circle 2, 35, 100, 100 ; colour, radius, xcenter, ycenter
+	draw_circle 15, 30, 100, 100 ; colour, radius, xcenter, ycenter
+	draw_circle 2, 25, 100, 100 ; colour, radius, xcenter, ycenter
+	draw_circle 15, 20, 100, 100 ; colour, radius, xcenter, ycenter
+	draw_circle 2, 15, 100, 100 ; colour, radius, xcenter, ycenter
+	draw_circle 15, 10, 100, 100 ; colour, radius, xcenter, ycenter
+	draw_circle 2, 5, 100, 100 ; colour, radius, xcenter, ycenter
+	draw_circle 15, 1, 100, 100 ; colour, radius, xcenter, ycenter
+	draw_circle 15, 0, 100, 100 ; colour, radius, xcenter, ycenter
+
 	; mov		si, line_drawn_msg
 	; call	Console_WriteLine_16
 
