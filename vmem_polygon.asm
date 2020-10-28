@@ -1,5 +1,7 @@
 ; vmem_polygon.asm
-; Requires at least 3 points to be given
+; Contains a mcaro and function to draw a polygon
+; Requires an array of x and y positions constituting the points to be plotted
+; Will then draw lines connecting the points, and adds an enclosing line to close off the polygon
 
 %ifndef VMEM_POLYGON_ASM
 %define VMEM_POLYGON_ASM
@@ -9,6 +11,7 @@
 %include "math.asm"
 %include "vmem_line.asm"
 
+; points array, no of points, colour
 %macro draw_polygon 3
     lea		ax, [%1]
 	push 	ax
