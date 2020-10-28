@@ -13,6 +13,7 @@ ORG 9000h
 %include "graphics.asm"
 %include "vmem_circle.asm"
 %include "vmem_line.asm"
+%include "vmem_polygon.asm"
 %include "vmem_rect.asm"
 
 ;	Start of the second stage of the boot loader
@@ -22,42 +23,6 @@ Second_Stage:
     call 	Console_WriteLine_16
 
 	call	Set_Video_Mode
-	push	0; y1
-	push	300 ; x1
-	push	0 ; y0
-	push	20 ; x0
-	push	15 ; col
-	call	Draw_Line
-	push	0 ; y1
-	push	20 ; x1
-	push	200 ; y0
-	push	20 ; x0
-	push	14 ; col
-	call	Draw_Line
-	push	5 ; y1
-	push	5 ; x1
-	push	0 ; y0
-	push	5 ; x0
-	push	13 ; col
-	call	Draw_Line
-	push	0 ; y1
-	push	0 ; x1
-	push	50 ; y0
-	push	50 ; x0
-	push	12 ; col
-	call	Draw_Line
-	push	0 ; y1
-	push	0 ; x1
-	push	10 ; y0
-	push	1 ; x0
-	push	11 ; col
-	call	Draw_Line
-	push	50 ; y1
-	push	0 ; x1
-	push	200 ; y0
-	push	0 ; x0
-	push	10 ; col
-	call	Draw_Line
 	draw_line 12, 0, 0, 320, 200
 	draw_line 12, 320, 0, 0, 200
 	draw_rect 5, 0, 0, 159, 50
@@ -72,10 +37,8 @@ Second_Stage:
 	draw_circle 2, 5, 160, 100 ; colour, radius, xcenter, ycenter
 	draw_circle 15, 1, 160, 100 ; colour, radius, xcenter, ycenter
 	draw_circle 15, 0, 160, 100 ; colour, radius, xcenter, ycenter
-
-	; mov		si, line_drawn_msg
-	; call	Console_WriteLine_16
-
+	draw_polygon triangle_array, 3, 14
+	draw_polygon hexagon_array, 6, 9
 
 	; This never-ending loop ends the code.  It replaces the hlt instruction
 	; used in earlier examples since that causes some odd behaviour in 
@@ -85,6 +48,8 @@ endloop:
 
 second_stage_msg	db 'Second stage loaded', 0
 line_drawn_msg		db 'Line finished drawing', 0
+triangle_array	dw 240, 80, 240, 110, 280, 110
+hexagon_array	dw 40, 80, 30, 100, 40, 120, 60, 120, 70, 100, 60, 80
 
 	times 3584-($-$$) db 0	
 

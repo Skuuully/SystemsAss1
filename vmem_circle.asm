@@ -1,3 +1,7 @@
+; vmem_circle.asm
+; Contains function and macro to draw a circle to the screen.
+; Uses the circle bresenham algorithm to do so, implementation details found and adapted from here: https://www.javatpoint.com/computer-graphics-bresenhams-circle-algorithm
+
 %ifndef VMEM_CIRCLE_ASM
 %define VMEM_CIRCLE_ASM
 

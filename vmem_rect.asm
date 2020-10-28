@@ -1,3 +1,11 @@
+; vmem_rect.asm
+; Cotnains function and macro to draw a rectangle to the screen.
+; Uses a single loop and relies on video memory being one long block of continuos memory to access.
+; Works by calculating a start point from x and y given.
+; Calculates an offset to get to the start of the next 
+; Increments to the value and checks if it is still within rect width, if it is plot, else add the offset and plot
+; Repeat until width*height of pixels plotted 
+
 %ifndef VMEM_SQUARE_ASM
 %define VMEM_SQUARE_ASM
 

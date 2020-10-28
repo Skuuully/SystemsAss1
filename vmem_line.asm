@@ -1,3 +1,7 @@
+; vmem_line.asm
+; Cntains function and macro to draw a line to video memory
+; Uses bresenhams line algorithm to determine a best fit, only uses int operations.
+
 %ifndef VMEM_LINE_ASM
 %define VMEM_LINE_ASM
 
@@ -34,7 +38,7 @@ bad_param_message  db 'bad parameter given, x value range 0 - 320, y value range
 ; push 100 ; y1
 ; push 100 ; x1
 ; push 0 ; y0
-; push 0 ; y1
+; push 0 ; x0
 ; push 12 ; colour between 0-15
 Draw_Line:
     push    bp
@@ -42,7 +46,7 @@ Draw_Line:
     sub     sp, 12
     push    es
     pushgen
-.SetupEs
+.SetupEs:
     push    0A000h
     pop     es
 .CheckParams:
