@@ -43,6 +43,7 @@ Console_Write_CRLF:
 
 Console_Write_16:
 	mov 	ah, 0Eh						; BIOS call to output value in AL to screen
+	mov		bl, 15						; Ensure text always white
 
 Console_Write_16_Repeat:
     mov		al, [si]

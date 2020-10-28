@@ -9,4 +9,12 @@ Set_Video_Mode:
     pop     ax
     ret
 
+Set_Text_Mode:
+    push    ax
+    mov     al, 0Eh
+    mov     ah, 0
+    int     10h
+    pop     ax
+    ret
+
 %endif

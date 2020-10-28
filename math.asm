@@ -15,6 +15,11 @@
 	call	Math_Modulo
 %endmacro
 
+%macro math_abs 1
+	push 	%1
+	call	Math_Abs
+%endmacro
+
 ; Example
 ; push	2
 ; push	4

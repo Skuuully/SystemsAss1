@@ -2,6 +2,7 @@
 %define VMEM_CIRCLE_ASM
 
 %include "functions_16.asm"
+%include "graphics.asm"
 %include "math.asm"
 
 ; colour, radius, ycenter, xcenter
@@ -26,6 +27,8 @@
     mov     [es:bx], al
 %endmacro
 
+circle_bad_parameter    db 'Bad parameter supplied to draw circle', 0
+
 %assign colour 4
 %assign radius 6
 %assign xcenter 8
@@ -39,9 +42,37 @@ Draw_Circle:
     mov     bp, sp
     sub     sp, 6
     push    es
+    pushgen
+.SetupEs:
     push    0A000h
     pop     es
-    pushgen
+.CheckParameters:
+    mov     ax, [bp + xcenter]
+    mov     bx, [bp + radius]
+    add     ax, bx
+    cmp     ax, 320
+    jg      .BadParameter
+    sal     bx, 1 ;*=2
+    sub     ax, bx
+    cmp     ax, 0
+    jl      .BadParameter
+
+    mov     ax, [bp + ycenter]
+    mov     bx, [bp + radius]
+    add     ax, bx
+    cmp     ax, 200
+    jg      .BadParameter
+    sal     bx, 1 ;*=2
+    sub     ax, bx
+    cmp     ax, 0
+    jl      .BadParameter
+
+    ; Parameters ok
+    jmp     .InitDecision
+.BadParameter:
+    call    Set_Text_Mode
+    console_writeline_16 circle_bad_parameter
+    jmp     .Cleanup
 .InitDecision: ; d = 3 - 2r
     mov     bx, 3
     mov     ax, [bp + radius]

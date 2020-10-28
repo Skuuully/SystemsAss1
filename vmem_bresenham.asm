@@ -3,14 +3,17 @@
 
 %include "math.asm"
 
-colourmessage   db 'colour: ', 0
-x0message   db 'x0: ', 0
-x1message   db 'x1: ', 0
-y0message   db 'y0: ', 0
-y1message   db 'y1: ', 0
-loopingmessage  db 'looping now', 0
 bad_param_message  db 'bad parameter given, x value range 0 - 320, y value range 0 - 200', 0
-;bad_param_message   db, 'bad parameter given, x value must be in range ', 0
+
+; colour, x0, y0, x1, y1
+%macro draw_line 5
+    push    %5
+    push    %4
+    push    %3
+    push    %2
+    push    %1
+    call    Draw_Line
+%endmacro
 
 ; Passed params
 %assign     y1  12
@@ -37,7 +40,11 @@ Draw_Line:
     push    bp
     mov     bp, sp
     sub     sp, 12
+    push    es
     pushgen
+.SetupEs
+    push    0A000h
+    pop     es
 .CheckParams:
     mov     bx, [bp + x0]
     cmp     bx, 0
@@ -63,6 +70,7 @@ Draw_Line:
     cmp     bx, 200
     jg      .BadParams
 
+    ; Parameters are ok
     jmp     .SetupDeltaX
 .BadParams:
     mov     si, bad_param_message
@@ -72,15 +80,13 @@ Draw_Line:
     mov     ax, [bp + x0]
     mov     bx, [bp + x1]
     sub     bx, ax
-    push    bx
-    call    Math_Abs
+    math_abs    bx
     mov     [bp - deltaX], ax
 .SetupDeltaY:
     mov     ax, [bp + y0]
     mov     bx, [bp + y1]
     sub     bx, ax
-    push    bx
-    call    Math_Abs
+    math_abs    bx
     mov     [bp - deltaY], ax
 .SetupErr:
     mov     ax, [bp - deltaX]
@@ -110,14 +116,9 @@ Draw_Line:
     mov     ax, 1
     mov     [bp - sy], ax
 .Loop:
-.SetupSegment:
-    mov     ax, 0A000h
-    mov     es, ax
 .SetupOffset:
     mov     bx, [bp + y0]
-    push    bx
-    push    320
-    call    Math_Mul
+    math_mul    bx, 320
     mov     bx, ax
     mov     ax, [bp + x0]
     add     bx, ax
@@ -174,6 +175,7 @@ Draw_Line:
 
 .Cleanup:
     popgen
+    pop     es
     mov     sp, bp
     pop     bp
     ret     10

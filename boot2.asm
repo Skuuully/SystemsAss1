@@ -58,18 +58,20 @@ Second_Stage:
 	push	0 ; x0
 	push	10 ; col
 	call	Draw_Line
-	draw_rect 3, 5, 5, 50, 10
-	draw_rect 1, 55, 5, 50, 10
-	draw_circle 15, 40, 100, 100 ; colour, radius, xcenter, ycenter
-	draw_circle 2, 35, 100, 100 ; colour, radius, xcenter, ycenter
-	draw_circle 15, 30, 100, 100 ; colour, radius, xcenter, ycenter
-	draw_circle 2, 25, 100, 100 ; colour, radius, xcenter, ycenter
-	draw_circle 15, 20, 100, 100 ; colour, radius, xcenter, ycenter
-	draw_circle 2, 15, 100, 100 ; colour, radius, xcenter, ycenter
-	draw_circle 15, 10, 100, 100 ; colour, radius, xcenter, ycenter
-	draw_circle 2, 5, 100, 100 ; colour, radius, xcenter, ycenter
-	draw_circle 15, 1, 100, 100 ; colour, radius, xcenter, ycenter
-	draw_circle 15, 0, 100, 100 ; colour, radius, xcenter, ycenter
+	draw_line 12, 0, 0, 320, 200
+	draw_line 12, 320, 0, 0, 200
+	draw_rect 5, 0, 0, 159, 50
+	draw_rect 6, 161, 0, 159, 50
+	draw_circle 15, 40, 160, 100 ; colour, radius, xcenter, ycenter
+	draw_circle 2, 35, 160, 100 ; colour, radius, xcenter, ycenter
+	draw_circle 15, 30, 160, 100 ; colour, radius, xcenter, ycenter
+	draw_circle 2, 25, 160, 100 ; colour, radius, xcenter, ycenter
+	draw_circle 15, 20, 160, 100 ; colour, radius, xcenter, ycenter
+	draw_circle 2, 15, 160, 100 ; colour, radius, xcenter, ycenter
+	draw_circle 15, 10, 160, 100 ; colour, radius, xcenter, ycenter
+	draw_circle 2, 5, 160, 100 ; colour, radius, xcenter, ycenter
+	draw_circle 15, 1, 160, 100 ; colour, radius, xcenter, ycenter
+	draw_circle 15, 0, 160, 100 ; colour, radius, xcenter, ycenter
 
 	; mov		si, line_drawn_msg
 	; call	Console_WriteLine_16
