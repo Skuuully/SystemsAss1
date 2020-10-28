@@ -3,13 +3,6 @@
 
 %include "math.asm"
 
-colourmessage   db 'colour: ', 0
-x0message   db 'x0: ', 0
-x1message   db 'x1: ', 0
-y0message   db 'y0: ', 0
-y1message   db 'y1: ', 0
-loopingmessage  db 'looping now', 0
-
 ; Passed params
 %assign     y1  12
 %assign     x1  10
@@ -37,32 +30,6 @@ Draw_Line:
     sub     sp, 12
 
     pushgen
-; .DebugParams:
-;     mov     si, colourmessage
-;     call    Console_Write_16
-;     mov     bx, [bp + colour]
-;     call    Console_Write_Int
-
-;     mov     si, x0message
-;     call    Console_Write_16
-;     mov     bx, [bp + x0]
-;     call    Console_Write_Int
-
-;     mov     si, y0message
-;     call    Console_Write_16
-;     mov     bx, [bp + y0]
-;     call    Console_Write_Int
-
-;     mov     si, x1message
-;     call    Console_Write_16
-;     mov     bx, [bp + x1]
-;     call    Console_Write_Int
-
-;     mov     si, y1message
-;     call    Console_Write_16
-;     mov     bx, [bp + y1]
-;     call    Console_Write_Int
-;     jmp     .Cleanup
 .SetupDeltaX:
     mov     ax, [bp + x0]
     mov     bx, [bp + x1]

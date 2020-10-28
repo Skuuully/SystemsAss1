@@ -1,5 +1,5 @@
-%ifndef VMEM_BRESENHAM_ASM
-%define VMEM_BRESENHAM_ASM
+%ifndef VMEM_LINE_ASM
+%define VMEM_LINE_ASM
 
 %include "math.asm"
 

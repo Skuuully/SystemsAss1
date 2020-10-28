@@ -11,8 +11,8 @@ ORG 9000h
 ;%include "bios_bresenham.asm"
 %include "functions_16.asm"
 %include "graphics.asm"
-%include "vmem_bresenham.asm"
 %include "vmem_circle.asm"
+%include "vmem_line.asm"
 %include "vmem_rect.asm"
 
 ;	Start of the second stage of the boot loader
