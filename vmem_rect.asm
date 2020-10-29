@@ -95,7 +95,7 @@ Draw_Rect:
 .Draw:
 	mov		cx, [bp + width]
 	mov		ax, [bp + colour]
-    rep stosb
+    rep     stosb
 .UpdateDi:
 	mov		cx, [bp + width]
 	sub		di, cx
