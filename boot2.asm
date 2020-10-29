@@ -23,10 +23,10 @@ Second_Stage:
     call 	Console_WriteLine_16
 
 	call	Set_Video_Mode
-	draw_line 12, 0, 0, 320, 200
-	draw_line 12, 320, 0, 0, 200
 	draw_rect 5, 0, 0, 159, 50
 	draw_rect 6, 161, 0, 159, 50
+	draw_line 10, 0, 0, 320, 200
+	draw_line 11, 320, 0, 0, 200
 	draw_circle 15, 40, 160, 100 ; colour, radius, xcenter, ycenter
 	draw_circle 2, 35, 160, 100 ; colour, radius, xcenter, ycenter
 	draw_circle 15, 30, 160, 100 ; colour, radius, xcenter, ycenter

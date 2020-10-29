@@ -2,9 +2,8 @@
 ; Cotnains function and macro to draw a rectangle to the screen.
 ; Uses a single loop and relies on video memory being one long block of continuos memory to access.
 ; Works by calculating a start point from x and y given.
-; Calculates an offset to get to the start of the next 
-; Increments to the value and checks if it is still within rect width, if it is plot, else add the offset and plot
-; Repeat until width*height of pixels plotted 
+; Calculates the final pixel to plot to use as acheck to quit the loop
+; Uses stosb to output a row, loops rows until positioned after the pixel
 
 %ifndef VMEM_SQUARE_ASM
 %define VMEM_SQUARE_ASM
@@ -31,11 +30,8 @@ rect_bad_parameter db 'Bad parameters given to draw rectangle', 0
 %assign width 10
 %assign height 12
 
-%assign total_pixels 2
-%assign offset 4 
-%assign start_pixel 6
-%assign x_end 8
-%assign pixels_plotted 10
+%assign start_pixel 2
+%assign end_pixel 4
 
 ; push 	10 ; height
 ; push 	50 ; width
@@ -74,64 +70,41 @@ Draw_Rect:
     cmp     ax, 200
     jg      .BadParameter
 
-    jmp     .SetupTotalPixels
+    jmp     .SetupStartPixel
 .BadParameter:
     call    Set_Text_Mode
     console_writeline_16 rect_bad_parameter
     jmp     .Cleanup
-.SetupTotalPixels:
-    mov     ax, [bp + width]
-    mov     bx, [bp + height]
-    push    ax
-    push    bx
-    call    Math_Mul
-    mov     [bp - total_pixels], ax
-.SetupStart:
-    mov     ax, [bp + y0]
-    math_mul    ax, 320
-    mov     bx, [bp + x0]
-    add     ax, bx
-    mov     [bp - start_pixel], ax
-.SetupOffset:
-    mov     ax, 321
-    mov     bx, [bp + width]
-    sub     ax, bx
-    mov     [bp - offset], ax
-.SetupXEnd:
-    mov     ax, [bp + x0]
-    mov     bx, [bp + width]
-    add     ax, bx
-    mov     [bp - x_end], ax
-.Start:
-    mov     bx, [bp - start_pixel]
-    xor     cx, cx
-    mov     [bp - pixels_plotted], cx
-.Plot:
-    mov     ax, [bp + colour]
-    mov     [es:bx], al
-    mov     dx, [bp - pixels_plotted]
-    inc     dx
-    mov     [bp - pixels_plotted], dx
-    mov     ax, [bp - total_pixels]
-    cmp     dx, ax
-    je      .Cleanup
-.PutIncreaseToCx:
-    push    dx
-    mov     dx, [bp + width]
-    push    dx
-    call    Math_Modulo
-    cmp     ax, 0
-    je      .IncreaseCxOffset
-    jmp     .IncrementCx
-.IncreaseCxOffset:
-    mov     dx, [bp - offset]
-    mov     cx, dx
-    jmp     .UpdateBx
-.IncrementCx:
-    mov     cx, 1
-.UpdateBx:
-    add     bx, cx
-    jmp     .Plot
+.SetupStartPixel:
+	mov		ax, [bp + y0]
+	math_mul ax, 320
+	mov		bx, [bp + x0]
+	add 	ax, bx  ; ax now contains starting point
+	mov		[bp - start_pixel], ax
+.SetupEndPixel:
+	mov		cx, [bp + width]
+	add		ax, cx
+	mov		cx, ax
+	mov		bx, [bp + height]
+	math_mul bx, 320
+	add		cx, ax
+	mov		[bp - end_pixel], cx
+.InitDi:
+	mov		ax, [bp - start_pixel]
+	mov		di, ax
+.Draw:
+	mov		cx, [bp + width]
+	mov		ax, [bp + colour]
+    rep stosb
+.UpdateDi:
+	mov		cx, [bp + width]
+	sub		di, cx
+    mov     ax, 320
+	add		di, ax
+.CheckFinished:
+	mov		cx, [bp - end_pixel]
+	cmp		di, cx
+	jl		.Draw
 .Cleanup:
     popgen
     pop     es
